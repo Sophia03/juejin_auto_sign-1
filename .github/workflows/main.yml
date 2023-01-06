@@ -1,0 +1,25 @@
+name: Growth
+
+on:
+  schedule:
+    # UTC 时间 比北京时间晚8个小时 8点运行一次
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+
+jobs:
+  growth:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: '16.14.2'
+
+      - name: Depend install and serve
+        env:
+          COOKIE: ${{ secrets.COOKIE }}
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+        run: |
+          npm install
+          npm run dev
